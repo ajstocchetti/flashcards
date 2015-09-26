@@ -12,6 +12,7 @@
   <script src="js/factories/scoreFactory.js"></script>
   <script src="js/directives/loader.js"></script>
   <script src="js/directives/flashCard.js"></script>
+  <script src="js/directives/borderOnHover.js"></script>
   <script src="js/controllers/flashCardController.js"></script>
   <script src="js/controllers/mainCOntroller.js"></script>
 </head>
@@ -23,7 +24,7 @@
     <div ng-include="'templates/stats.html'"></div>
 
     <loader ng-show="loading"></loader>
-    <flash-card ng-repeat="fc in flashCards" flash-card="fc"></flash-card>
+    <flash-card ng-show="!loading" ng-repeat="fc in flashCards | orderBy:'question'" flash-card="fc"></flash-card>
   </div>
 </body>
 

@@ -76,3 +76,9 @@
         margin-right: 0; }
       #statistics #scoreboard h3 span {
         font-weight: bold; }
+
+
+
+.specialHoverBorder {
+  border: 5px dashed brown !important;
+}

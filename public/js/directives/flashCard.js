@@ -4,9 +4,6 @@ app.directive('flashCard', function() {
       flashCard: '='
     },
     restrict: 'E',
-    templateUrl: '/js/directives/flashCard.html',
-    link: function(scope, element, attribute) {
-      console.log(scope.flashCard)
-    }
+    templateUrl: '/js/directives/flashCard.html'
   }
 })
