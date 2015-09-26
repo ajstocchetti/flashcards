@@ -7,13 +7,16 @@ app.controller('MainController', function($scope, FlashCardsFactory) {
     'Node'
   ];
   $scope.getCategoryCards = function(category) {
+      $scope.loading = true;
       $scope.activeCat = category;
       FlashCardsFactory.getFlashcards(category).then(function(data) {
         $scope.flashCards = data;
+        $scope.loading = false;
       })
-    }
+    };
+  $scope.getCategoryCards();
 
-  FlashCardsFactory.getFlashcards().then(function(cards) {
-    $scope.flashCards = cards;
-  });
+  // FlashCardsFactory.getFlashcards().then(function(cards) {
+  //   $scope.flashCards = cards;
+  // });
 })
