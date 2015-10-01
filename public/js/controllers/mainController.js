@@ -1,11 +1,12 @@
-app.controller('MainController', function($scope, FlashCardsFactory) {
+app.controller('MainController', function($scope, FlashCardsFactory, CategoryFactory) {
   $scope.activeCat = "";
-  $scope.categories = [
-    'MongoDB',
-    'Express',
-    'Angular',
-    'Node'
-  ];
+  $scope.categories = CategoryFactory.getCategories();
+  // $scope.categories = [
+  //   'MongoDB',
+  //   'Express',
+  //   'Angular',
+  //   'Node'
+  // ];
   $scope.getCategoryCards = function(category) {
       $scope.loading = true;
       $scope.activeCat = category;

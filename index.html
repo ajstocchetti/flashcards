@@ -10,22 +10,40 @@
   <script src="app.js"></script>
   <script src="js/factories/flashCardFactory.js"></script>
   <script src="js/factories/scoreFactory.js"></script>
+  <script src="js/factories/categoryFactory.js"></script>
   <script src="js/directives/loader.js"></script>
   <script src="js/directives/flashCard.js"></script>
   <script src="js/directives/borderOnHover.js"></script>
   <script src="js/controllers/flashCardController.js"></script>
-  <script src="js/controllers/mainCOntroller.js"></script>
+  <script src="js/controllers/mainController.js"></script>
+  <script src="js/controllers/newCardController.js"></script>
 </head>
 
 <body>
-  <div ng-app="FlashCards" ng-controller="MainController">
+  <div ng-app="FlashCards">
+    <div ng-controller="MainController">
     <button class="category-button" ng-repeat="cat in categories" ng-click="getCategoryCards(cat)" ng-class="{active: cat===activeCat}">{{cat}}</button>
     <button class="category-button" ng-click="getCategoryCards()" ng-class="{active: !activeCat}">All Categories</button>
     <div ng-include="'templates/stats.html'"></div>
 
     <loader ng-show="loading"></loader>
-    <flash-card ng-show="!loading" ng-repeat="fc in flashCards | orderBy:'question'" flash-card="fc"></flash-card>
+    <zflash-card ng-show="!loading" ng-repeat="fc in flashCards | orderBy:'question'" flash-card="fc"></flash-card>
   </div>
+
+  <div ng-controller="NewCardController">
+    <pre>{{ newCard | json }}</pre>
+    <input name="question" ng-model="newCard.question"></input>
+    <select name="category" ng-model="newCard.category">
+      <option ng-repeat="cat in categories">{{cat}}</option>
+    </select>
+
+    <div ng-repeat="answer in newCard.answers">
+      <input name="ans" ng-model="answer.text"></input>
+      <input type="checkbox" ng-model="answer.correct"></input>
+    </div>
+    <button type="submit" ng-click="sendNew()">Submit!</button>
+  </div>
+</div>
 </body>
 
 </html>
