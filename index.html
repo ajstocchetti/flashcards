@@ -6,6 +6,8 @@
   <!-- We've provided some styles for you, aren't we nice? -->
   <link rel="stylesheet" type="text/css" href="reset.css" />
   <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
   <script src="angular.js"></script>
   <script src="app.js"></script>
   <script src="js/factories/flashCardFactory.js"></script>
@@ -22,28 +24,45 @@
 <body>
   <div ng-app="FlashCards">
     <div ng-controller="MainController">
-    <button class="category-button" ng-repeat="cat in categories" ng-click="getCategoryCards(cat)" ng-class="{active: cat===activeCat}">{{cat}}</button>
-    <button class="category-button" ng-click="getCategoryCards()" ng-class="{active: !activeCat}">All Categories</button>
-    <div ng-include="'templates/stats.html'"></div>
+      <button class="category-button" ng-repeat="cat in categories" ng-click="getCategoryCards(cat)" ng-class="{active: cat===activeCat}">{{cat}}</button>
+      <button class="category-button" ng-click="getCategoryCards()" ng-class="{active: !activeCat}">All Categories</button>
+      <div ng-include="'templates/stats.html'"></div>
 
-    <loader ng-show="loading"></loader>
-    <zflash-card ng-show="!loading" ng-repeat="fc in flashCards | orderBy:'question'" flash-card="fc"></flash-card>
-  </div>
-
-  <div ng-controller="NewCardController">
-    <pre>{{ newCard | json }}</pre>
-    <input name="question" ng-model="newCard.question"></input>
-    <select name="category" ng-model="newCard.category">
-      <option ng-repeat="cat in categories">{{cat}}</option>
-    </select>
-
-    <div ng-repeat="answer in newCard.answers">
-      <input name="ans" ng-model="answer.text"></input>
-      <input type="checkbox" ng-model="answer.correct"></input>
+      <loader ng-show="loading"></loader>
+      <flash-card ng-show="!loading" ng-repeat="fc in flashCards | orderBy:'question'" flash-card="fc">
+        </flash-card>
     </div>
-    <button type="submit" ng-click="sendNew()">Submit!</button>
+
+    <div ng-controller="NewCardController" class="flash-card">
+      <form name="newCardForm" ng-submit="sendNew()" ng-init="blankCard()">
+        <div class="form-group">
+          <label for="question">New Question:</label>
+          <span class="error" ng-show="newCardForm.question.$error.required && newCardForm.question.$dirty">This field is required</span>
+          <span class="error" ng-show="newCardForm.question.$error.minlength">This question is too short!</span>
+          <input name="question" class="form-control" ng-model="newCard.question" required ng-minlength="15"></input>
+        </div>
+        <div class="form-group">
+          <label for="category">Area of question</label>
+          <span class="error" ng-show="newCardForm.category.$error.required && newCardForm.category.$dirty">This field is required</span>
+          <select name="category" ng-model="newCard.category" required>
+            <option ng-repeat="cat in categories">{{cat}}</option>
+          </select>
+        </div>
+
+        <div ng-repeat="answer in newCard.answers">
+          <div class="form-group">
+            <label for="ans">Answer text</label>
+            <span class="error" ng-show="newCardForm.ans.$error.maxlength">This answer is too long</span>
+            <input name="ans" class="form-control" ng-model="answer.text" required ng-maxlength="40"></input>
+            <label>Correct answer?</label>
+            <input type="checkbox" ng-model="answer.correct"></input>
+          </div>
+        </div>
+        <button type="submit" ng-disabled="newCardForm.$invalid">Submit!</button>
+        <button ng-click="blankCard()">Reset Form</button>
+      </form>
+    </div>
   </div>
-</div>
 </body>
 
 </html>
